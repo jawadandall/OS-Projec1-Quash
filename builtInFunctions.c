@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <dirent.h> //For acessing directories to implement ls
 #include "builtInFunctions.h"
 
 extern char **environ;
@@ -80,4 +81,30 @@ void execute_setenv(char **arguments) {
     if (setenv(arguments[1], arguments[2], 1) != 0) {
         perror("setenv error");
     }
+}
+
+//Function for built in command ls (List files in directory)
+void execute_ls(char **arguments) {
+    // If no directory is specified, use the current directory
+    const char *path = (arguments[1] == NULL) ? "." : arguments[1];
+
+    // Open the directory
+    DIR *dir = opendir(path);
+    if (dir == NULL) {
+        perror("ls error");
+        return;
+    }
+
+    // Read and print each entry in the directory
+    struct dirent *entry;
+    while ((entry = readdir(dir)) != NULL) {
+        // Skip the "." and ".." entries
+        if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0) {
+            printf("%s  ", entry->d_name);
+        }
+    }
+    printf("\n");
+
+    // Close the directory
+    closedir(dir);
 }

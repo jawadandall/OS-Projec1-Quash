@@ -36,7 +36,9 @@ void parse_input(char **arguments) {
         execute_setenv(arguments);
     } else if (strcmp(arguments[0], "env") == 0) {  //check if env
         execute_env();
-    }else { //If command unrecognized
+    } else if (strcmp(arguments[0], "ls") == 0) {  //check if ls
+      execute_ls(arguments);
+    } else { //If command unrecognized
         printf("Unknown command: %s\n", arguments[0]); 
     }
 }
