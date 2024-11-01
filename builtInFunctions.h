@@ -10,7 +10,6 @@ void execute_echo(char **arguments);
 void execute_exit();
 void execute_setenv(char **arguments);
 void execute_env();
-void execute_ls(char **arguments);
 
 
 #endif
