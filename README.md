@@ -1,102 +1,110 @@
 # Shell Implementation Project Report
 
 ## Project Overview
-This project implements a custom shell (command-line interface) in C, demonstrating fundamental operating system and system programming concepts such as process management, signal handling, and command parsing.
+This comprehensive shell project aims to create a custom command-line interface that mimics core functionality of UNIX shells like bash. The assignment is structured as a progressive implementation with six distinct tasks, each adding complexity and sophistication to the shell's capabilities.
 
-## System Architecture
+## Project Requirements Breakdown
+
+### Task 1: Basic Shell Functionality
+The first task establishes the foundational shell features:
+
+#### Prompt Display
+- Use `getcwd()` to dynamically display current working directory
+- Format prompt as `<path>> ` (e.g., `/home/codio>`)
+
+#### Built-in Commands Implementation
+1. `cd`: Change current working directory
+2. `pwd`: Print current working directory
+3. `echo`: Print messages and environment variables
+4. `exit`: Terminate shell
+5. `env`: Display environment variables
+6. `setenv`: Set environment variables
+
+#### Key Technical Challenges
+- Parsing command-line input
+- Handling environment variable expansion (e.g., `$HOME`)
+- Implementing built-in command logic
+
+### Task 2: Process Management
+Extend shell to execute external commands:
+- Detect non-built-in commands
+- Use `fork()` to create child processes
+- Execute commands using `execvp()`
+- Wait for child process completion
+- Error reporting for failed executions
+
+### Task 3: Background Process Support
+- Detect `&` at command end
+- Allow non-blocking command execution
+- Immediate shell prompt return for background processes
+
+### Task 4: Signal Handling
+- Implement `SIGINT` (Ctrl+C) handler
+- Prevent shell termination during foreground process execution
+- Return to prompt after signal interruption
+
+### Task 5: Process Time Limitation
+- Implement 10-second timeout for foreground processes
+- Use `kill()` to terminate long-running processes
+- Restore shell prompt after timeout
+
+### Task 6 (Optional/Extra Credit): I/O Redirection
+Options include:
+- Input redirection (`<`)
+- Output redirection (`>`)
+- Piping between processes (`|`)
+
+## Implementation Strategy
 
 ### Modular Design
-The shell is implemented using a modular approach, separating different functionalities into distinct source files:
+The implementation leverages a modular approach with separate source files:
 
-1. **shell2.c**: Main shell program and entry point
+1. **shell2.c**: Main shell logic and event loop
 2. **commandParser.c**: Command parsing and routing
-3. **builtInFunctions.c**: Built-in shell commands implementation
+3. **builtInFunctions.c**: Built-in command implementations
 4. **processManagement.c**: Process creation and management
-5. **signalHandlers.c**: Signal handling mechanisms
+5. **signalHandlers.c**: Advanced signal handling
 
-### Design Principles
-- **Separation of Concerns**: Each module handles a specific aspect of shell functionality
-- **Modularity**: Functions are organized into logical components
-- **Error Handling**: Comprehensive error checking and reporting
-- **Extensibility**: Modular design allows easy addition of new features
+### Technical Design Principles
+- Separation of concerns
+- Comprehensive error handling
+- Flexible command parsing
+- Extensible architecture
 
-## Key Components and Functionality
+## Key Technical Implementations
 
-### 1. Command Parsing (`commandParser.c`)
-- Tokenizes input command line
-- Routes commands to appropriate execution functions
-- Supports built-in commands and external command execution
+### Command Parsing
+- Tokenize input using `strtok()`
+- Support variable argument count
+- Handle environment variable expansion
 
-### 2. Built-in Functions (`builtInFunctions.c`)
-Implemented built-in commands include:
-- `pwd`: Print current working directory
-- `cd`: Change directory
-- `echo`: Print arguments
-- `exit`: Terminate shell
-- `env`: Display environment variables
-- `setenv`: Set environment variable
+### Process Management
+- Use `fork()` for process creation
+- `execvp()` for command execution
+- `waitpid()` for process tracking
+- Background process detection
 
-### 3. Process Management (`processManagement.c`)
-- Handles process creation using `fork()`
-- Supports background and foreground process execution
-- Manages process cleanup
-- Implements background process detection with `&` operator
+### Signal Handling
+- `sigaction()` for robust signal management
+- Differentiate foreground/background process signals
+- Prevent shell interruption
 
-### 4. Signal Handling (`signalHandlers.c`)
-- Manages signals like `SIGINT` (Ctrl+C)
-- Implements timeout mechanism for long-running processes
-- Provides process group management
-
-### 5. Main Shell Loop (`shell2.c`)
-- Continuous command input and execution
-- Displays current working directory as prompt
-- Handles input parsing and command routing
-
-## Technical Implementation Details
-
-### Process Creation Strategy
-- Uses `fork()` to create child processes
-- Child processes execute commands via `execvp()`
-- Parent process manages process state and waits for completion
-
-### Signal Handling Approach
-- Uses `sigaction()` for robust signal management
-- Differentiates between foreground and background process signal treatment
-- Prevents shell interruption during critical operations
-
-### Error Handling
-- Comprehensive error checking for system calls
-- Informative error messages
-- Graceful error recovery where possible
-
-## Noteworthy Implementation Techniques
-
-1. **Dynamic Argument Parsing**
-   - Supports variable number of arguments
-   - Handles command-line input flexibly
-
-2. **Environment Variable Management**
-   - Uses external `environ` pointer for environment access
-   - Provides `setenv` functionality
-
-3. **Background Process Support**
-   - Detects background processes via `&` operator
-   - Provides non-blocking execution
-
-## Potential Improvements
-- Add more built-in commands
-- Implement input/output redirection
-- Support piping between commands
-- Enhanced tab completion
-- More sophisticated signal handling
+### Environment Variable Management
+- Use global `environ` pointer
+- Implement dynamic variable setting and retrieval
 
 ## Compilation and Execution
-Compile with:
 ```bash
 gcc -o shell shell2.c commandParser.c builtInFunctions.c processManagement.c signalHandlers.c
 ```
 
-## Conclusion
-This shell implementation demonstrates core operating system programming concepts, showcasing process management, signal handling, and command parsing techniques in C.
+## Learning Outcomes
+This project provides hands-on experience with:
+- UNIX system programming
+- Process management
+- Signal handling
+- Command-line interface design
+- C programming techniques
 
-Would you like me to elaborate on any specific aspect of the project report?
+## Conclusion
+The shell implementation demonstrates fundamental operating system concepts through a practical, incrementally developed command-line interface.
